@@ -1,10 +1,19 @@
 from django.shortcuts import render, redirect
 from .models import Post, Profile
-from .forms import UserRegisterForm
+from .forms import UserRegisterForm, PostForm
 
 def home(request):
     posts = Post.objects.all()
-    return render(request, 'twitter/newsfeed.html', context={'posts': posts})
+    if request.method == 'POST':
+        form = PostForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.user = request.user
+            post.save()
+            return redirect('home')
+    else: 
+        form = PostForm()
+    return render(request, 'twitter/newsfeed.html', context={'posts': posts, 'form': form})
 
 def register(request):
     if request.method == 'POST':
