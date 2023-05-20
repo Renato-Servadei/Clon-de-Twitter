@@ -25,3 +25,8 @@ def register(request):
         form = UserRegisterForm()
 
     return render(request, 'twitter/register.html', context={'form': form})
+
+def delete(request, post_id):
+    post = Post.objects.get(id=post_id)
+    post.delete()
+    return redirect('home')

@@ -24,7 +24,9 @@
 
             <button class="twitter-btn">Log in</button>
         </form>
-
+        {% if form.errors %}
+        <p>Nombre de usuario o contraseña incorrectos</p>
+        {% endif %}
         <div class="footer">
             <a href="#">Forget Password</a> .
             <a href="#">Sign up to twitter</a>
