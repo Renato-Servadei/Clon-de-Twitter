@@ -19,13 +19,15 @@
                         100 Followers
                         100 Following
                     </h6>
-                    <a href="#" class="btn  text-white rounded-pill">Mi perfil</a>
+                    <a href="{% url 'profile' request.user.username %}" class="btn  text-white rounded-pill">Mi perfil</a>
                 </div>
 
             </div>
+            <a href="{% url 'edit' %}">
             <button id="addATweetLeft" onclick="addTweet()" type="button"
                 style="border-radius: 30px; font-size: 1.1rem; font-weight:bold;"
                 class="btn btn-lg btn-block mt-4 text-white ">Editar mi perfil</button>
+            </a>
         </div>
     </div>
     <!-- End Barra Izquierda -->
@@ -76,7 +78,10 @@
                     <img src="{{ post.user.profile.image.url }}"
                         alt="" class="avator">
                     <div class="tweet-header-info">
-                        {{ post.user.first_name }}<span>@{{ post.user.username }}</span><span>{{ post.timestamp | naturaltime}}
+                        <a href="{% url 'profile' post.user %}">
+                        {{ post.user.first_name }}</a><span>
+                            @{{ post.user.username }}</span>
+                            <span>{{ post.timestamp | naturaltime}}
                         </span>
                         <p>{{ post.content }} </p>
                     </div>
