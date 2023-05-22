@@ -1,8 +1,10 @@
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from .models import Post, Profile
+from .models import Post, Profile, Relationship
 from .forms import UserRegisterForm, PostForm, UserUpdateForm, ProfileUpdateForm
 
+@login_required
 def home(request):
     posts = Post.objects.all()
     if request.method == 'POST':
@@ -50,3 +52,18 @@ def edit(request):
         u_form = UserUpdateForm(instance=request.user)
         p_form = ProfileUpdateForm()  
     return render(request, 'twitter/editar.html', context={'u_form': u_form, 'p_form':p_form})
+
+def follow(request, username):
+    current_user = request.user
+    to_user = User.objects.get(username=username)
+    to_user_id = to_user
+    rel = Relationship(from_user=current_user, to_user=to_user_id)
+    rel.save()
+    return redirect('home')
+
+def unfollow(request, username):
+    current_user = request.user
+    to_user = User.objects.get(username=username)
+    rel = Relationship.objects.get(from_user=current_user.id, to_user=to_user.id)
+    rel.delete()
+    return redirect('home')
