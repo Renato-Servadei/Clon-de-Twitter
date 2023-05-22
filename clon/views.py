@@ -34,6 +34,7 @@ def delete(request, post_id):
     post.delete()
     return redirect('home')
 
+@login_required
 def profile(request, username):
     user = User.objects.get(username=username)
     posts = user.posts.all()
@@ -53,6 +54,7 @@ def edit(request):
         p_form = ProfileUpdateForm()  
     return render(request, 'twitter/editar.html', context={'u_form': u_form, 'p_form':p_form})
 
+@login_required
 def follow(request, username):
     current_user = request.user
     to_user = User.objects.get(username=username)
@@ -61,6 +63,7 @@ def follow(request, username):
     rel.save()
     return redirect('home')
 
+@login_required
 def unfollow(request, username):
     current_user = request.user
     to_user = User.objects.get(username=username)
